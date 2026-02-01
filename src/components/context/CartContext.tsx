@@ -93,6 +93,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
 export function useCart() {
   const ctx = useContext(CartContext);
-  if (ctx === undefined) throw new Error('useCart must be used within CartProvider');
+  if (ctx === undefined) throw new Error('useCart must be hkjh used within CartProvider');
   return ctx;
 }
