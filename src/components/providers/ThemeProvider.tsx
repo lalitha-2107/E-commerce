@@ -27,10 +27,8 @@ export function ThemeProvider({
   disableTransitionOnChange = false,
 }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(defaultTheme);
-  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setMounted(true);
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     const resolved = theme === 'system'
@@ -44,8 +42,9 @@ export function ThemeProvider({
     setThemeState(value);
   }, []);
 
-  if (!mounted) return <>{children}</>;
-
+  // Always wrap in Provider so useTheme() works (e.g. during SSR / before mount).
+  // Previously we returned children without Provider when !mounted, which caused
+  // "useTheme must be used within ThemeProvider" on Vercel.
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
   );
